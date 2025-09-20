@@ -48,17 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loginUser = async (username, password) => {
-        const response = await fetch(`${API_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-            localStorage.setItem('token', data.access_token);
-            await checkAuthState();
-        } else {
-            alert(`Login failed: ${data.msg}`);
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('token', data.access_token);
+                await checkAuthState();
+            } else {
+                alert(`Login failed: ${data.msg}`);
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An unexpected error occurred during login. Please try again.');
         }
     };
 
