@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
@@ -94,11 +95,25 @@ def profile():
     user = User.query.get(current_user_id)
     return jsonify({"id": user.id, "username": user.username}), 200
 
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    return jsonify([{"id": u.id, "username": u.username} for u in users])
+
 # Category Routes
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
-    categories = Category.query.all()
-    return jsonify([{"id": c.id, "name": c.name} for c in categories])
+    categories_with_counts = db.session.query(
+        Category.id,
+        Category.name,
+        func.count(Item.id).label('item_count')
+    ).outerjoin(Item, Category.id == Item.category_id).group_by(Category.id).all()
+
+    return jsonify([{
+        "id": c.id,
+        "name": c.name,
+        "item_count": c.item_count
+    } for c in categories_with_counts])
 
 @app.route('/api/categories', methods=['POST'])
 @jwt_required()
@@ -120,11 +135,14 @@ def get_items():
     query = Item.query
     search_term = request.args.get('search')
     category_id = request.args.get('category')
+    user_id = request.args.get('user')
 
     if search_term:
         query = query.filter(Item.name.contains(search_term))
     if category_id:
         query = query.filter_by(category_id=category_id)
+    if user_id:
+        query = query.filter_by(user_id=user_id)
 
     items = query.all()
     return jsonify([{

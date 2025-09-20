@@ -101,3 +101,46 @@ button {
     font-size: 0.9rem;
     color: #555;
 }
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.category-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.category-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.user-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.user-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
