@@ -1,0 +1,14 @@
+# Database
+backend/project.db
+
+# Logs
+*.log
+
+# Test artifacts
+frontend/test_image.jpg
+frontend/verify_app.py
+jules-scratch/
+
+# Python cache
+__pycache__/
+*.pyc

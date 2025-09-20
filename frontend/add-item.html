@@ -1,0 +1,24 @@
+<div class="form-container">
+    <h2>Add a New Item</h2>
+    <form id="add-item-form">
+        <div class="form-group">
+            <label for="item-name">Name</label>
+            <input type="text" id="item-name" required>
+        </div>
+        <div class="form-group">
+            <label for="item-description">Description</label>
+            <textarea id="item-description" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="item-category">Category</label>
+            <select id="item-category" required>
+                <!-- Categories will be populated here -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="item-image">Image</label>
+            <input type="file" id="item-image" accept="image/*" required>
+        </div>
+        <button type="submit">Add Item</button>
+    </form>
+</div>
