@@ -76,14 +76,23 @@ def register():
 
 @app.route('/api/login', methods=['POST'])
 def login():
-    data = request.get_json()
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+    except Exception as e:
+        return jsonify({"msg": "Invalid JSON format"}), 400
+
     username = data.get('username')
     password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"msg": "Username and password are required"}), 400
 
     user = User.query.filter_by(username=username).first()
 
     if user and bcrypt.check_password_hash(user.password_hash, password):
-        access_token = create_access_token(identity=str(user.id))
+        access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token)
 
     return jsonify({"msg": "Bad username or password"}), 401
