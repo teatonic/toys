@@ -12,3 +12,5 @@ jules-scratch/
 # Python cache
 __pycache__/
 *.pyc
+venv/
+backend/venv/
